@@ -11,11 +11,11 @@ if (isset($_GET['option'])) {
             break;
 
         default:
-            $data['status'] = 'ERROR'
+            $data['status'] = 'ERROR';
         break;
     }
 }else{
-    $data['status'] = 'ERROR'
+    $data['status'] = 'ERROR';
 }
 
 //Emitir a resposta da API
