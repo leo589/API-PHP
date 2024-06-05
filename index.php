@@ -1,6 +1,9 @@
 <?php
 $data = [];
 
+// File to store user data
+$file = 'usuarios.json';
+
 // Request
 if (isset($_GET['option'])) {
     switch ($_GET['option']) {
@@ -17,14 +20,22 @@ if (isset($_GET['option'])) {
             
             // Check if all parameters are provided and valid
             if ($id && $nome && $email && $senha) {
-                // Simulate saving to a database
-                $data['status'] = 'SUCCESS';
-                $data['message'] = 'User registered successfully!';
-                $data['user'] = [
+                // Load existing users
+                $users = file_exists($file) ? json_decode(file_get_contents($file), true) : [];
+
+                // Add new user
+                $users[] = [
                     'id' => $id,
                     'nome' => $nome,
-                    'email' => $email
+                    'email' => $email,
+                    'senha' => password_hash($senha, PASSWORD_DEFAULT) // Hash the password
                 ];
+
+                // Save updated user list to file
+                file_put_contents($file, json_encode($users));
+
+                $data['status'] = 'SUCCESS';
+                $data['message'] = 'User registered successfully!';
             } else {
                 $data['status'] = 'ERROR';
                 $data['message'] = 'Invalid or missing parameters';
